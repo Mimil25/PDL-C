@@ -1,0 +1,5 @@
+// Ce programe affiche "hello world" et quitte
+
+action Principale()
+	afficherln("hello", " world")
+finAction

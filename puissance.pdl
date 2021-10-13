@@ -1,0 +1,42 @@
+entier fonction puissance(entier x, entier n) // calcule et retourne x à la puissance n
+	si(n == 0) alors
+		retourner 1
+	finSi
+	entier p ← puissance(x, n/2)
+	si(n % 2 == 0) alors
+		retourner p*p
+	sinon
+		retourner p*p*x
+	finSi
+finFonction
+
+action Principale()
+	entier x, n
+	afficher("Saisissez x :")
+	x ← saisir()
+	afficher("Saisissez n :")
+        n ← saisir()
+
+	afficherln(x, " puisance ", n, " = ", puissance(x, n))
+
+	afficherln("Test des boucles")
+
+	pour i de 0 a 30 pas de 3 faire
+		afficher(i, ' ')
+	finPour	
+	afficherln()
+	
+	reel r ← 1.0/3.0
+	tantQue(r < 100) faire
+		r ← r * 2
+		afficher(r, ' ')
+	finTantQue
+	afficherln()
+	
+	afficher("Saisissez un reél : ")
+	r ← saisir()
+	faire
+		r /= 2
+		afficher(r, ' ')
+	tantQue(r > 1)
+finAction
