@@ -96,6 +96,17 @@ class Compilateur:
         symboles = [symbole for symbole in symboles if symbole]
         return symboles
 
+    def parenthese_corespondante(symboles, i):
+        assert symboles[i] == '(', SyntaxError('\'(\' expected')
+        p = 1
+        while p:
+            i += 1
+            if symboles[i] == '(':
+                p += 1
+            elif symboles[i] == ')':
+                p -= 1
+        return i
+
     def transformer_afficher(symboles, i):
         fonction = symboles[i]
         symboles[i] = 'std::cout'
@@ -185,6 +196,9 @@ class Compilateur:
     def remplacer(self, symboles):
         substitution_pdl = {'Principale':'main',
                             '←':'=',
+                            'ET':'&&',
+                            'OU':'||',
+                            'NON':'!',
                             'reel':'double',
                             'entier':'int',
                             'booleen':'bool',
@@ -208,13 +222,15 @@ class Compilateur:
             elif symboles[i] == 'action':
                 symboles[i] = 'int'
                 j = i
-                while symboles[j] != ')': j += 1
+                while symboles[j] != '(': j += 1
+                j = Compilateur.parenthese_corespondante(symboles, j)
                 symboles.insert(j+1, '{')
             
             elif symboles[i] == 'fonction':
                 symboles[i] = ''
                 j = i
-                while symboles[j] != ')': j += 1
+                while symboles[j] != '(': j += 1
+                j = Compilateur.parenthese_corespondante(symboles, j)
                 symboles.insert(j+1, '{')
 
             elif symboles[i] == 'structure':
@@ -224,7 +240,8 @@ class Compilateur:
             elif symboles[i] == 'si':
                 symboles[i] = 'if'
                 j = i
-                while symboles[j] != ')': j += 1
+                while symboles[j] != '(': j += 1
+                j = Compilateur.parenthese_corespondante(symboles, j)
                 symboles[j+1] = '{'
 
             elif symboles[i] == 'sinon':
@@ -238,7 +255,8 @@ class Compilateur:
             elif symboles[i] == 'tantQue':
                 symboles[i] = 'while'
                 j = i
-                while symboles[j] != ')': j += 1
+                while symboles[j] != '(': j += 1
+                j = Compilateur.parenthese_corespondante(symboles, j)
                 if symboles[i-1] == '}':
                     symboles[j+1] = ';'
                 else :
