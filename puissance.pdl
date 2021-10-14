@@ -36,7 +36,7 @@ action Principale()
 	afficher("Saisissez un reél : ")
 	r ← saisir()
 	faire
-		r /= 2
+		r ← r / 2
 		afficher(r, ' ')
 	tantQue(r > 1)
 finAction
