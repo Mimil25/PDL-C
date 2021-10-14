@@ -2,16 +2,14 @@
 
 import argparse
 
-ENTETE_CPP = 'fichiers/entete.cpp'
-
 class Compilateur:
-    def __init__(self, fichier_source):
+    def __init__(self, fichier_source, fichier_entete):
         self.source_pdl = ""
         self.source_cpp = ""
         with open(fichier_source, 'r') as fichier:
             self.source_pdl = fichier.read()
             fichier.close()
-        with open(ENTETE_CPP, 'r') as fichier:
+        with open(fichier_entete, 'r') as fichier:
             self.source_cpp = fichier.read()
             fichier.close()
         
@@ -298,7 +296,6 @@ class Compilateur:
     
     def compile(self):
         symboles = Compilateur.separations(self.source_pdl)
-        print(symboles)
         self.remplacer(symboles)
         self.source_cpp += Compilateur.joint(symboles)
         self.source_cpp += '\n'
@@ -312,8 +309,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Transform PDL code into C++ code.')
     parser.add_argument('source')
     parser.add_argument('--out', default='program.cpp')
+    parser.add_argument('--header', default='entete.cpp')
     args = parser.parse_args()
     
-    compilateur = Compilateur(args.source)
+    compilateur = Compilateur(args.source, args.header)
     compilateur.compile()
     compilateur.enregistrer(args.out)
